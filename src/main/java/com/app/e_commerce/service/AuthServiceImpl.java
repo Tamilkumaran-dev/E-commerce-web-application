@@ -34,7 +34,7 @@ public class AuthServiceImpl implements LoginService{
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         ECommerceUser userSave = userRepo.save(user);
-        JwtTokenDto jwtTokenDto = new JwtTokenDto("token","Saved", Optional.of(userSave));
+        JwtTokenDto jwtTokenDto = new JwtTokenDto("token","Saved", null);
 
         return jwtTokenDto;
      }
@@ -57,7 +57,7 @@ public class AuthServiceImpl implements LoginService{
             }
             else {
                 String token = jwtUtil.generateToken(login.getEmail());
-                return new JwtTokenDto(token,"Successfully logged in",Optional.of(user.get()));
+                return new JwtTokenDto(token,"Successfully logged in",null);
             }
         }
 

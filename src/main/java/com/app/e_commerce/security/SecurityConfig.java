@@ -14,11 +14,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,JwtFilterChain jwtFilterChain) throws Exception {
-        http.csrf().disable()
+            http.cors()
+                .and()
+                .csrf()
+                .disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/auth","/auth/**").permitAll()   // Allow all GET requests
-                        .anyRequest().authenticated()                         // All other requests (POST, PUT, DELETE) require authentication
+                        .requestMatchers(HttpMethod.POST,"/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/product/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/product/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/profile/**").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/profile/**").authenticated()
+                        .anyRequest().authenticated()
                 ).addFilterBefore(jwtFilterChain, UsernamePasswordAuthenticationFilter.class);
 
 

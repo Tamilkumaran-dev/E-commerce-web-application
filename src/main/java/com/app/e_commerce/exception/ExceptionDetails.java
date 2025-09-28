@@ -10,10 +10,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExceptionDetails {
 
+    public ExceptionDetails(String message, String errorCode, String path, Boolean isException) {
+        this.message = message;
+        this.errorCode = errorCode;
+        this.path = path;
+        this.isException = isException;
+    }
+
     private String message;
     private String errorCode;
     private String path;
     private Boolean isException;
+    private Boolean status = false;
+
 
 
 }
