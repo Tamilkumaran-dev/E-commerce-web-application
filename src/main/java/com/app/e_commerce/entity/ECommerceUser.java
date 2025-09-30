@@ -35,7 +35,7 @@ public class ECommerceUser {
     )
     private List<Product> cart = new ArrayList<>();
 
-    @OneToMany(mappedBy = "buyer", fetch = FetchType.EAGER)
-    private List<Order> orders;
+    @OneToMany(mappedBy = "buyer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
 
 }

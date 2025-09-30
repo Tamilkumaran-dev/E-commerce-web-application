@@ -56,36 +56,14 @@ public class ProductService {
        }
     }
 
-    //At to cart
-    public DoneResponce addToCart(Long productId, HttpServletRequest request){
+    public Page<Product> searchProduct(String product, int page, int size){
 
-            String pureToken = "";
-
-            for (Cookie cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    pureToken = cookie.getValue();
-                }
+            if(product.equals("AllProduct")){
+                return getAllProduct(page,size);
             }
-
-            Product product = getProduct(productId).getProduct().get();
-            String userEmail = jwtUtil.decodeToken(pureToken).getSubject();
-            ECommerceUser user = userRepo.findByEmail(userEmail).get();
-
-            List<Product> cart = user.getCart();
-
-            cart.add(product);
-
-            user.setCart(cart);
-
-            for(Product pro : cart){
-                System.out.println(pro.getProductName());
+            else {
+                Pageable pageable = PageRequest.of(page - 1 ,size);
+                return productRepo.searchProducts(product, pageable);
             }
-
-            userRepo.save(user);
-
-            return new DoneResponce("Add successfully",true);
-
     }
-
-
 }

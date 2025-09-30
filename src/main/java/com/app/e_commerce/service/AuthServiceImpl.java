@@ -25,11 +25,12 @@ public class AuthServiceImpl implements LoginService{
 
         Optional<ECommerceUser> duplicateUser = userRepo.findByEmail(user.getEmail());
 
-        if (user.getEmail() == null || user.getName() == null || user.getPassword() == null) {
-            throw new CommonException("Haven't fill the user detail");
+        if (user.getEmail().equals("") || user.getName().equals("") || user.getPassword().equals("")) {
+            throw new CommonException("Haven't filled the user detail");
         }
+
         else if(duplicateUser.isPresent()){
-            throw new CommonException("Duplicat");
+            throw new CommonException("Email is already exist");
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -53,7 +54,7 @@ public class AuthServiceImpl implements LoginService{
         else{
             String password = user.get().getPassword();
             if(!passwordEncoder.matches(login.getPassword(),password)){
-                throw new CommonException("password is in currect");
+                throw new CommonException("password is incorrect");
             }
             else {
                 String token = jwtUtil.generateToken(login.getEmail());

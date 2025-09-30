@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,9 +33,18 @@ public class Order{
     private ECommerceUser buyer;
 
 
-    @OneToMany(mappedBy = "ordered" , cascade = CascadeType.ALL)
-    private List<Product> product;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "ordered_product",  // table name (snake_case is convention)
+            joinColumns = @JoinColumn(name = "order_id"),       // FK to Order
+            inverseJoinColumns = @JoinColumn(name = "product_id") // FK to Product
+    )
+    private List<Product> product = new ArrayList<>();
+
 
     private String status;
 
+
 }
+
+

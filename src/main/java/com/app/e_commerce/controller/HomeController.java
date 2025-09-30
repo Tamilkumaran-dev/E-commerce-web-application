@@ -35,6 +35,10 @@ public class HomeController {
         return new ResponseEntity<>(productService.getProduct(productId),HttpStatus.OK);
     }
 
+    @GetMapping("/home/searchProduct/{keyword}/{page}/{size}")
+    public ResponseEntity<Page<Product>> searchProduct(@PathVariable("keyword") String keyword,@PathVariable("page") int page,@PathVariable("size") int size){
+        return new ResponseEntity<>(productService.searchProduct(keyword,page,size),HttpStatus.OK);
+    }
 
 
 }

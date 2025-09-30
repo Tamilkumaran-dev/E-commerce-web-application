@@ -17,7 +17,7 @@ public class JwtTokenDto {
     private  String token;
     private Optional<?> data;
     private Boolean status = true;
-    private Boolean isException = true;
+    private Boolean isException = false;
 
 
     public JwtTokenDto(String token,String message, Optional<?> data) {
@@ -25,4 +25,5 @@ public class JwtTokenDto {
         this.message = message;
         this.data = data;
     }
+
 }

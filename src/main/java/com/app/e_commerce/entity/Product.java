@@ -37,9 +37,8 @@ public class Product {
     private List<ECommerceUser> userAddToCart = new ArrayList<>();
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "orders" , referencedColumnName = "id")
+    @ManyToMany(mappedBy = "product")
     @JsonIgnore
-    private Order ordered;
+    private List<Order> ordered = new ArrayList<>();
 
 }
