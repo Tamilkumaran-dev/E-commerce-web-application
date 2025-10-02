@@ -29,7 +29,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/profile/**").authenticated()
                         .requestMatchers(HttpMethod.GET,"/cart/**").authenticated()
                         .requestMatchers(HttpMethod.POST,"/cart/**").authenticated()
-                        .requestMatchers("/order/**").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/order/**").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/order/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/order/allOrders").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/order/**").authenticated()
                         .requestMatchers("/cart/**").authenticated()
                         .anyRequest().authenticated()
                 ).addFilterBefore(jwtFilterChain, UsernamePasswordAuthenticationFilter.class);

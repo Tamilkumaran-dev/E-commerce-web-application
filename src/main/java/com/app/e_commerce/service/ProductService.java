@@ -66,4 +66,13 @@ public class ProductService {
                 return productRepo.searchProducts(product, pageable);
             }
     }
+
+
+    public DoneResponce updateProduct(Long productId,Product product){
+            Product product1 = productRepo.findById(productId).get();
+            System.out.println(product.getId());
+            productRepo.save(product);
+            return new DoneResponce("Updated",true);
+
+    }
 }

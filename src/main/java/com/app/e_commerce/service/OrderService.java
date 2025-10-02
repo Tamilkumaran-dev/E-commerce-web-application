@@ -2,6 +2,7 @@ package com.app.e_commerce.service;
 
 import com.app.e_commerce.Dto.DoneResponce;
 import com.app.e_commerce.Dto.JwtTokenDto;
+import com.app.e_commerce.Dto.OrdersDto;
 import com.app.e_commerce.entity.ECommerceUser;
 import com.app.e_commerce.entity.Order;
 import com.app.e_commerce.entity.Product;
@@ -13,6 +14,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,7 +46,7 @@ public class OrderService {
            order.setDate(LocalDateTime.now());
            order.setProduct(new ArrayList<>(user.getCart()));
            order.setBuyerId(userId);
-           order.setStatus("Order placed");
+           order.setStatus("order-placed");
            orderRepo.save(order);
 
            user.getCart().clear();
@@ -127,9 +132,32 @@ public class OrderService {
     }
 
 
+    public List<OrdersDto> listOfOrders(int page,int size){
 
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("date").descending());
 
+        Page<Order> pageList = orderRepo.findAll(pageable);
+        List<Order> orderList = pageList.getContent();
 
+        Iterator<Order> iteratorOrder = orderList.iterator();
+        List<OrdersDto> orderDto = new ArrayList<>();
+        while (iteratorOrder.hasNext()){
+            Order order = iteratorOrder.next();
+            ECommerceUser user = userRepo.findById(order.getBuyerId()).get();
+            OrdersDto newOrder = new OrdersDto(order.getId(),order.getDate(),user.getName(),user.getPersonalDetail(),order.getProduct(),order.getStatus());
+            orderDto.add(newOrder);
+        }
+
+        return orderDto;
+    }
+
+    public DoneResponce updateOrderStatus(Long orderId,String status){
+        Order order = orderRepo.findById(orderId).get();
+        order.setStatus(status);
+        orderRepo.save(order);
+
+        return new DoneResponce("order status changed",true);
+    }
 }
       class  DescendingOrderComparator implements Comparator<Order> {
                   @Override

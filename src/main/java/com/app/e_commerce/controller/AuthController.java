@@ -5,6 +5,9 @@ import com.app.e_commerce.Dto.JwtTokenDto;
 import com.app.e_commerce.Dto.LoginDto;
 import com.app.e_commerce.entity.ECommerceUser;
 import com.app.e_commerce.service.AuthServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -20,17 +23,35 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/auth")
+@Tag(name = "Authentication controller",
+        description = "This controller is used for user authentication.")
 public class AuthController {
 
 
     private AuthServiceImpl authService;
 
+    @Operation(
+            summary = "Sign up end point",
+            description = "This end point is used to add new users"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "the user is created"
+    )
     @PostMapping("/signup")
     public ResponseEntity<JwtTokenDto> signUpController(@RequestBody ECommerceUser user){
 
         return new ResponseEntity<>(authService.signUpService(user), HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Login end point",
+            description = "This end point is used to login the user"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "User logged in"
+    )
     @PostMapping("/login")
     public ResponseEntity<JwtTokenDto> loginController(@RequestBody LoginDto login, HttpServletResponse response){
 
@@ -46,6 +67,14 @@ public class AuthController {
         return new ResponseEntity<>(authService.loginService(login),HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Logout end point",
+            description = "This end point is used to logout user"
+    )
+    @ApiResponse(
+            responseCode = "202",
+            description = "This is used to logout user"
+    )
     @PostMapping("/logout")
     public ResponseEntity<Map<String,String>> logoutController(HttpServletResponse response){
 
@@ -60,13 +89,5 @@ public class AuthController {
         return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/test")
-    public String testPost(@RequestBody LoginDto loginDto){
-        return "test";
-    }
-    @GetMapping("/test")
-    public String testget(){
-        return "test";
-    }
 
 }
