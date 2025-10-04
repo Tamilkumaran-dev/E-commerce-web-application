@@ -70,9 +70,14 @@ public class ProductService {
 
     public DoneResponce updateProduct(Long productId,Product product){
             Product product1 = productRepo.findById(productId).get();
-            System.out.println(product.getId());
-            productRepo.save(product);
-            return new DoneResponce("Updated",true);
+            product1.setProductName(product.getProductName());
+            product1.setDescription(product.getDescription());
+            product1.setImage(product.getImage());
+            product1.setPrice(product.getPrice());
+            product1.setQuantity(product.getQuantity());
 
+
+            productRepo.save(product1);
+            return new DoneResponce("Updated",true);
     }
 }

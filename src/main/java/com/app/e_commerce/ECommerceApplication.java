@@ -33,6 +33,7 @@ public class ECommerceApplication {
 		return new BCryptPasswordEncoder();
 	}
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(ECommerceApplication.class, args);
 	}

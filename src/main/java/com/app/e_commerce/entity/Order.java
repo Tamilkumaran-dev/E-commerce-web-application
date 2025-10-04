@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class Order{
     private Long id;
 
     @Schema(name = "date", description = "the will store the order placed date and time",defaultValue = "Set by default")
+    @UpdateTimestamp
     private LocalDateTime date;
 
     @Schema(name = "buyerId", description = "set the user id who place the order" , defaultValue = "2")
