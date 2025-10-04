@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,19 +54,28 @@ public class AuthController {
             description = "User logged in"
     )
     @PostMapping("/login")
-    public ResponseEntity<JwtTokenDto> loginController(@RequestBody LoginDto login, HttpServletResponse response){
+    public ResponseEntity<JwtTokenDto> loginController(@RequestBody LoginDto login,
+                                                       HttpServletResponse response) {
 
+        // Call login service to get JWT token
         JwtTokenDto jwtToken = authService.loginService(login);
 
-        Cookie jwtCookie = new Cookie("jwt",jwtToken.getToken());
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(true);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(12*60*60);
+        // Create cookie using ResponseCookie
+        ResponseCookie cookie = ResponseCookie.from("jwt", jwtToken.getToken())
+                .httpOnly(true)          // inaccessible to JS
+                .secure(true)            // required for HTTPS
+                .path("/")               // root path
+                .maxAge(12 * 60 * 60)    // 12 hours
+                .sameSite("None")        // allow cross-origin
+                .build();
 
-        response.addCookie(jwtCookie);
-        return new ResponseEntity<>(authService.loginService(login),HttpStatus.OK);
+        // Add cookie to response
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        // Return JWT token in response body as well (optional)
+        return new ResponseEntity<>(jwtToken, HttpStatus.OK);
     }
+
 
     @Operation(
             summary = "Logout end point",
