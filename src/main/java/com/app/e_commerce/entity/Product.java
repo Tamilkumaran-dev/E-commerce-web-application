@@ -29,6 +29,7 @@ public class Product {
     private String productName;
 
     @Schema(name = "description", description = "Enter the product description" ,defaultValue = "Asus tuf gaming laptop")
+    @Column(length = 2000) // allows up to 2000 characters
     private String description;
 
     @Schema(name = "image", description = "Enter the image url", defaultValue = "https://laptopmedia.com/wp-content/uploads/2021/05/3-69.jpg")
