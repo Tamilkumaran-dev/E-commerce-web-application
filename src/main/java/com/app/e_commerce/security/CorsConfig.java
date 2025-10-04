@@ -7,17 +7,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfig {
-
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")            // allow all endpoints
-                        .allowedOrigins("https://e-commerce-application-frontend-six.vercel.app") // Replace with your frontend URL
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                registry.addMapping("/**")
+                        .allowedOrigins("https://e-commerce-application-frontend-six.vercel.app") // exact frontend URL
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // include OPTIONS
                         .allowedHeaders("*")
-                        .allowCredentials(true);      // allow cookies
+                        .allowCredentials(true); // allow cookies
             }
         };
     }

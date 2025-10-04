@@ -88,12 +88,16 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Map<String,String>> logoutController(HttpServletResponse response){
 
-        Cookie jwtCookie = new Cookie("jwt",null);
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(0);
+        ResponseCookie cookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)             // remove the cookie
+                .sameSite("None")
+                .build();
 
-        response.addCookie(jwtCookie);
+        response.addHeader("Set-Cookie", cookie.toString());
+
         Map<String,String> res = new HashMap<>();
         res.put("message","logout successfully");
         return new ResponseEntity<>(res,HttpStatus.ACCEPTED);
