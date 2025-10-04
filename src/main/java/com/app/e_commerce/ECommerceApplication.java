@@ -15,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(
-		title = "E-commerce-API",
-		description = "In this spring-boot application i have implemented, Customer account and Admin panel using sring-security with JWT." +
+		title = "E-commerce-API (The admin login emailId : Tamil@gmail.com : password : Tamil)",
+		description = "The admin login emailId : Tamil@gmail.com and password : Tamil. In this spring-boot application i have implemented, Customer account and Admin panel using sring-security with JWT." +
 				"Used mySQL for storing the user data, product, orders" +
 				"I have implemented GET, POST, PUT and DELETE HTTP methods",
 		version = "1.0.0",
