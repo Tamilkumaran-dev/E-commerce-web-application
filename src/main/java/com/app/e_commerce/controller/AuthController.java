@@ -65,7 +65,7 @@ public class AuthController {
                 .httpOnly(true)          // inaccessible to JS
                 .secure(true)            // required for HTTPS
                 .path("/")               // root path
-                .maxAge(12 * 60 * 60)    // 12 hours
+                .maxAge(30 * 12 * 60 * 60)    // 12 hours
                 .sameSite("None")        // allow cross-origin
                 .build();
 
