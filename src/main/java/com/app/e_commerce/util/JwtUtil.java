@@ -15,7 +15,7 @@ import java.util.Date;
 public class JwtUtil {
 
     private final static String secret = "This-Secret-must-have-larger-bits-loooooooooooooooooorrrrrrrrrrrrrgggggggggeeeeeee";
-    private final static long Expiration =12 * 60 * 60 * 1000;
+    private final static long Expiration =30 * 12 * 60 * 60 * 1000;
     private Key key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
 
